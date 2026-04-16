@@ -7,8 +7,8 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 authors = ["dexquote contributors"]
-repository = "https://github.com/dexquote/dexquote"
-homepage = "https://github.com/dexquote/dexquote"
+repository = "https://github.com/KaiserSnipes/dexquote"
+homepage = "https://github.com/KaiserSnipes/dexquote"
 readme = "README.md"
 rust-version = "1.80"
 
