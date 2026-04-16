@@ -1,0 +1,89 @@
+name: release
+
+# Builds pre-compiled dexquote binaries for every major desktop platform and
+# uploads them to the GitHub release that triggered this workflow. Users can
+# then `curl -L -o dexquote.tar.gz ...` instead of waiting for a cold
+# `cargo install` build.
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: dexquote-x86_64-linux.tar.gz
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            archive: dexquote-aarch64-linux.tar.gz
+            cross: true
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            archive: dexquote-x86_64-macos.tar.gz
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            archive: dexquote-aarch64-macos.tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: dexquote-x86_64-windows.zip
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross (linux aarch64 only)
+        if: matrix.cross
+        run: cargo install cross --locked
+
+      - name: Cache cargo registry + target
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Build release
+        shell: bash
+        run: |
+          if [[ "${{ matrix.cross }}" == "true" ]]; then
+            cross build --release --target ${{ matrix.target }} -p dexquote
+          else
+            cargo build --release --target ${{ matrix.target }} -p dexquote
+          fi
+
+      - name: Package (unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          cd target/${{ matrix.target }}/release
+          tar -czf ../../../${{ matrix.archive }} dexquote
+          cd -
+          ls -la ${{ matrix.archive }}
+
+      - name: Package (windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "target/${{ matrix.target }}/release/dexquote.exe" -DestinationPath "${{ matrix.archive }}"
+          Get-ChildItem "${{ matrix.archive }}"
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ matrix.archive }}
+          fail_on_unmatched_files: true

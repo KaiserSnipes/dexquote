@@ -1,0 +1,38 @@
+[package]
+name = "dexquote"
+description = "CLI for comparing DEX quotes across multiple protocols on EVM chains"
+keywords = ["ethereum", "dex", "defi", "quote", "cli"]
+categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "dexquote"
+path = "src/main.rs"
+
+[dependencies]
+dexquote-core = { path = "../dexquote-core", version = "0.1.0" }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+eyre = { workspace = true }
+futures = { workspace = true }
+alloy = { workspace = true }
+reqwest = { workspace = true }
+arboard = { version = "3", default-features = false }
+clap = { version = "4", features = ["derive", "env"] }
+clap_complete = "4"
+colored = "2"
+dirs = "5"
+humantime = "2"
+indicatif = "0.17"
+ratatui = "0.29"
+crossterm = "0.28"
+nucleo-matcher = "0.3"
+unicode-width = "0.2"

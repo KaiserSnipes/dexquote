@@ -1,0 +1,27 @@
+[package]
+name = "dexquote-core"
+description = "Library for comparing DEX quotes across multiple protocols on EVM chains"
+keywords = ["ethereum", "dex", "defi", "quote", "arbitrum"]
+categories = ["cryptography::cryptocurrencies", "api-bindings"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+futures = { workspace = true }
+async-trait = { workspace = true }
+reqwest = { workspace = true }
+alloy = { workspace = true }
+bs58 = "0.5"
+
+[dev-dependencies]
+tokio = { workspace = true }

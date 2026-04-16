@@ -1,0 +1,24 @@
+/target
+*.swp
+*.swo
+*~
+
+# Environment / secrets
+.env
+.env.local
+.env.*
+
+# OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE / tools
+.idea/
+.vscode/
+.claude/
+*.iml
+*.code-workspace
+
+# Development scratchpads
+*.json.bak
