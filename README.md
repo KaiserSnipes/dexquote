@@ -1,5 +1,6 @@
 # dexquote
 
+[![Crates.io](https://img.shields.io/crates/v/dexquote.svg)](https://crates.io/crates/dexquote)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Compare swap quotes across 25 DEX backends on 4 chains from your terminal. Read-only, no wallet, no signing, no API keys.
